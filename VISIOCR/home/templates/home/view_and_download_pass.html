@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View and Download Visitor Pass</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #34e89e, #0f3443);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        .form-container input {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-container input:focus {
+            border-color: #34e89e;
+            box-shadow: 0 0 5px rgba(52, 232, 158, 0.5);
+        }
+        .button {
+            display: inline-block;
+            width: 200px;
+            padding: 12px;
+            background-color: #34e89e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 15px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .button:hover {
+            background-color: #2f9770;
+            transform: translateY(-2px);
+        }
+        .pass-details {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .pass-details p {
+            margin-bottom: 10px;
+        }
+        .qr-code {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>View and Download Visitor Pass</h1>
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="pass_id" placeholder="Enter Pass ID" required><br>
+                <input type="text" name="name" placeholder="Enter Name" required><br>
+                <input type="text" name="aadhaar_number" placeholder="Enter Aadhaar Number" required><br>
+                <button type="submit" class="button">View and Download Pass</button>
+            </form>
+        </div>
+        {% if visitor_pass %}
+        <div class="pass-details">
+            <h2>Visitor Pass Details</h2>
+            <p><b>Pass ID:</b> {{ visitor_pass.visitor_pass_id }}</p>
+            <p><b>Name:</b> {{ visitor_pass.name }}</p>
+            <p><b>Mobile Number:</b> {{ visitor_pass.mobile_number }}</p>
+            <p><b>Date of Visiting:</b> {{ visitor_pass.date_of_visiting }}</p>
+            <p><b>Duration of Visiting:</b> {{ visitor_pass.duration_of_visiting }} hours</p>
+            <p><b>Aadhaar Number:</b> {{ visitor_pass.aadhaar_number }}</p>
+            <p><b>Date of Birth:</b> {{ visitor_pass.dob }}</p>
+            <p><b>Gender:</b> {{ visitor_pass.gender }}</p>
+        </div>
+        {% endif %}
+        {% if qr_code %}
+        <div class="qr-code">
+            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+        </div>
+        {% endif %}
+        <div class="back-to-home">
+            <a href="{% url 'home' %}" class="button">Back to Home</a>
+        </div>
+        {% if visitor_pass %}
+        <div class="download-pass">
+            <a href="{% url 'download_pass' visitor_pass.visitor_pass_id %}" class="button">Download Pass</a>
+        </div>
+        {% endif %}
+        {% if status_message %}
+        <div class="status">
+            <p>{{ status_message }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

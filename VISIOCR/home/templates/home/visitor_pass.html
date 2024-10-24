@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visitor Pass</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #FFDD57, #36D1DC);
+            padding: 20px;
+            margin: 0;
+        }
+        .visitor-pass {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #f7f9fc; /* Soft white-blue */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        h1 {
+            text-align: center;
+            color: #2C3E50;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .visitor-pass-details, .visitor-pass-info {
+            margin-bottom: 20px;
+        }
+        .visitor-pass-details h2, .visitor-pass-info h2 {
+            color: #34495E;
+            font-size: 20px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+        .visitor-pass-details p, .visitor-pass-info p {
+            margin-bottom: 10px;
+            color: #7F8C8D;
+            font-size: 16px;
+        }
+        .visitor-pass-id {
+            font-size: 14px;
+            color: #95A5A6;
+            margin-bottom: 10px;
+        }
+        .qr-code {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .back-to-home, .download-pass {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-to-home a, .download-pass a {
+            color: #3498DB;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .back-to-home a:hover, .download-pass a:hover {
+            color: #2980B9;
+        }
+    </style>
+</head>
+<body>
+    <div class="visitor-pass">
+        <h1>Visitor Pass</h1>
+        <div class="visitor-pass-details">
+            <h2>Visitor Pass Details</h2>
+            <p class="visitor-pass-id">Pass ID: {{ visitor_pass.visitor_pass_id }}</p>
+            <p>Name: {{ visitor_pass.name }}</p>
+            <p>Mobile Number: {{ visitor_pass.mobile_number }}</p>
+            <p>Date of Visiting: {{ visitor_pass.date_of_visiting }}</p>
+            <p>Duration of Visiting: {{ visitor_pass.duration_of_visiting }} hours</p>
+        </div>
+        <div class="visitor-pass-info">
+            <h2>Aadhaar Details</h2>
+            <p>Aadhaar Number: {{ visitor_pass.aadhaar_number }}</p>
+            <p>Date of Birth: {{ visitor_pass.dob }}</p>
+            <p>Gender: {{ visitor_pass.gender }}</p>
+        </div>
+        <div class="qr-code">
+            <h2>QR Code</h2>
+            <img src="data:image/png;base64,{{ qr_code }}" alt="Visitor Pass QR Code">
+        </div>
+        <div class="download-pass">
+            <a href="{% url 'download_pass' visitor_pass.visitor_pass_id %}">Download Pass as PDF</a>
+        </div>
+        <div class="back-to-home">
+            <a href="{% url 'home' %}">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

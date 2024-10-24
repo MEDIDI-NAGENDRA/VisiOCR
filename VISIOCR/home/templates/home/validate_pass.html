@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Validate Visitor Pass</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #FFDD57, #36D1DC);
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #f7f9fc;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        h1 {
+            color: #2C3E50;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="file"]:focus {
+            border-color: #34e89e;
+            box-shadow: 0 0 5px rgba(52, 232, 158, 0.5);
+        }
+        button {
+            padding: 12px;
+            background-color: #34e89e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        button:hover {
+            background-color: #2f9770;
+            transform: translateY(-2px);
+        }
+        .status {
+            margin-top: 20px;
+            font-size: 18px;
+            background-color: #e9f7ef;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #4caf50;
+        }
+        .status.active {
+            background-color: #e9f7ef;
+            border-color: #4caf50;
+        }
+        .status.expired {
+            background-color: #f9e0e0;
+            border-color: #f44336;
+        }
+        .back-to-home {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate Visitor Pass</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="qrImage">Choose QR Code:</label>
+            <input type="file" name="qr_image" accept="image/*" id="qrImage" required>
+            <button type="submit">Validate Pass</button>
+        </form>
+        {% if visitor_pass %}
+        <div class="status {% if status == 'Active' %}active{% else %}expired{% endif %}">
+            <h2>Pass Status: {{ status }}</h2>
+            <p><b>Pass ID:</b> {{ visitor_pass.visitor_pass_id }}</p>
+            <p><b>Name:</b> {{ visitor_pass.name }}</p>
+            <p><b>Mobile Number:</b> {{ visitor_pass.mobile_number }}</p>
+            <p><b>Date of Visiting:</b> {{ visitor_pass.date_of_visiting }}</p>
+            <p><b>Duration of Visiting:</b> {{ visitor_pass.duration_of_visiting }} hours</p>
+            <p><b>Aadhaar Number:</b> {{ visitor_pass.aadhaar_number }}</p>
+            <p><b>Date of Birth:</b> {{ visitor_pass.dob }}</p>
+            <p><b>Gender:</b> {{ visitor_pass.gender }}</p>
+        </div>
+        {% endif %}
+        {% if status_message %}
+        <div class="status">
+            <p>{{ status_message }}</p>
+        </div>
+        {% endif %}
+        <div class="back-to-home">
+            <a href="{% url 'home' %}">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
