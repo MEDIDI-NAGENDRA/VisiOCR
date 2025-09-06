@@ -1,5 +1,6 @@
 # VisiOCR Project
 
+
 This project involves extracting and validating information from AADHAR or PAN documents using OCR (Optical Character Recognition) and storing validated data into a MySQL database.
 
 **⦿ Requirements**
